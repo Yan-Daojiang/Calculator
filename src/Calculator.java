@@ -4,12 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 /**
  * @author: Yan_Daojiang
  * @date: 2018/12/14
- * @description:
+ * @description:包含计算器的界面设置输入检查，不能通过检查时的点击就不会进行响应
  **/
 public class Calculator extends JFrame implements ActionListener {
     //需要进行运算的表达式
@@ -44,21 +45,32 @@ public class Calculator extends JFrame implements ActionListener {
 
     //控制标志
     private boolean vbegin = true;// 控制输入，true为重新输入，false为接着输入
-    private boolean equals_flag = true;
+    private boolean equals_flag = true;//等号的控制标志
     private boolean isContinueInput = true;// true为正确，可以继续输入，false错误，输入锁定
 
-    final int MAXLEN = 500;
 
-
-    //初始化
-    public void go() {
+    /**************************************
+     **函数名及参数：go()
+     **返回类型：void
+     **作用：启动计算器，设置布局，开启监听，
+     * ****并初始化一个list接收输入
+     ********************************************/
+    public void go()
+    {
         initLayout();//界面设置
         initAction();//监听
         list = new ArrayList<String>();
     }
 
-    //基本布局设置
-    public void initLayout() {
+
+    /**************************************
+     **函数名及参数：initLayout()
+     **返回类型：void
+     **作用：初始化布局，
+     * ***包含文本框的布局和和按钮的布局及基本设置
+     ********************************************/
+    public void initLayout()
+    {
         //文本框的设置
         resultText.setHorizontalAlignment(JTextField.RIGHT);//设置对齐状态
         resultText.setEditable(false);//设置结果显示框为不可编辑状态
@@ -97,8 +109,14 @@ public class Calculator extends JFrame implements ActionListener {
 
     }
 
-    //组件注册监听
-    public void initAction(){
+
+    /**************************************
+     **函数名及参数：initAction()
+     **返回类型：void
+     **作用：对所有的组件进行监听
+     ********************************************/
+    public void initAction()
+    {
         btL_br.addActionListener(this);
         btR_br.addActionListener(this);
         bt_AC.addActionListener(this);
@@ -122,8 +140,14 @@ public class Calculator extends JFrame implements ActionListener {
 
     }
 
-    //主函数
-    public static void main(String[] args){
+
+    /**************************************
+     **函数名及参数：主函数
+     **返回类型：void
+     **作用：程序的入口，包含界面的一些基本的设置
+     ********************************************/
+    public static void main(String[] args)
+    {
         Calculator mainJFrame=new Calculator();
 
         Container container=mainJFrame.getContentPane();
@@ -144,8 +168,15 @@ public class Calculator extends JFrame implements ActionListener {
         mainJFrame.setVisible(true);
     }
 
+
+    /**************************************
+     **函数名及参数：actionPerformed(ActionEvent e)
+     **返回类型：void
+     **作用：组件发生操作时调用
+     ********************************************/
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e)
+    {
         //通过按钮上的标签获取用户点击的是哪个按钮
         String lable=e.getActionCommand();
         if(lable.equals("AC"))
@@ -154,16 +185,31 @@ public class Calculator extends JFrame implements ActionListener {
             handle(lable);
     }
 
-    //用于点击AC和需要将计算器清空的过程
-    private void clear(){
+
+    /**************************************
+     **函数名及参数：clear()
+     **返回类型：void
+     **作用：用于点击AC和需要将计算器清空的过程
+     * **包括清空用于接收的list和文本框修改控制标志和等号标志
+     ********************************************/
+    private void clear()
+    {
         list.clear();
         resultText.setText("0");
         vbegin = true;//控制输入表示设为---重新输入
         equals_flag = true;
     }
 
-    //处理点击AC之外的按钮，用于表达式的获取,输入一个检查一个
-    private void handle(String key) {
+
+
+    /**************************************
+     **函数名及参数：handle(String key)
+     **返回类型：void
+     **作用：处理数字和符号按钮，处理的过程中需要进行检查
+     * **通过了检查就进行显示
+     ********************************************/
+    private void handle(String key)
+    {
         String text = resultText.getText();
 
         if(list.isEmpty())
@@ -202,19 +248,34 @@ public class Calculator extends JFrame implements ActionListener {
         isContinueInput = true;
     }
 
-    //检查输入，小数点和括号的匹配是否合法
-    private void check(String command1,String command2){
+
+    /*****************************************************
+     **函数名及参数：check(String command1,String command2)
+     **返回类型：void
+     **作用：输入的检查函数，其中详细的分为第一位检查，小数点重复检查
+     * **如果某一项没有通过检查就将控制标志isContinueInput设置为false，表示不能继续输入当前的选择
+     *********************************************************/
+    private void check(String command1,String command2)
+    {
         boolean input_check,point_check,barket_check;
         input_check=input_check(command1,command2);
         point_check=point_check(command1,command2);
+        barket_check=barket_check(command1,command2);
         //未通过输入检查，小数点检查或者括号检查时就不能继续输入
-        if(!(input_check&&point_check))
+        if(!(input_check&&point_check&&barket_check))
             isContinueInput=false;
     }
 
-    //用于检查输入的第一位和输入时相邻两位是否合法，改该方法由check()方法调用
-    private boolean input_check(String command1,String command2){
+
+    /***********************************************************
+     **函数名及参数：input_check(String command1,String command2)
+     **返回类型： boolean
+     **作用:用于检查输入的第一位和输入时相邻两位是否合法，该方法由check()方法调用
+     *****************************************************************/
+    private boolean input_check(String command1,String command2)
+    {
         boolean flag=true;
+
         //检查第一位输入是否合法，第一位的输入不能为 + * / .
         if(command1.equals("#")&&(command2.equals("+") ||command2.equals("*")
                 ||command2.equals("/") || command2.equals(".")||command2.equals(")"))){
@@ -247,8 +308,14 @@ public class Calculator extends JFrame implements ActionListener {
         return flag;
     }
 
-    //用于检查小数点的重复性，如果有重复就返回false
-    private boolean point_check(String command1,String command2) {
+
+    /**************************************************************
+     **函数名及参数：point_check(String command1,String command2)
+     **返回类型： boolean
+     **作用:用于检查小数点的重复性，如果有重复就返回false
+     **************************************************************/
+    private boolean point_check(String command1,String command2)
+    {
         int point = 0;//进行小数点计数
         boolean flag = true;//用于返回的检查标志
 
@@ -272,8 +339,66 @@ public class Calculator extends JFrame implements ActionListener {
         return flag;
     }
 
-    //显示
-    private void printText(String key) {
+
+    /**************************************************************
+     **函数名及参数：barket_check(String command1,String command2)
+     **返回类型： boolean
+     **作用:括号的匹配检查
+     **************************************************************/
+    private boolean barket_check(String command1,String command2){
+        boolean flag=true;
+        // 检测右括号是否匹配
+        if ( command2.compareTo(")") == 0) {
+            int tip_right_bracket = 0;
+            for (int i = 0; i < list.size(); i++) {
+                // 如果出现一个左括号，则计数加1
+                if (list.get(i).equals("(")) {
+                    tip_right_bracket++;
+                }
+                // 如果出现一个右括号，则计数减1
+                if (list.get(i).equals(")")) {
+                    tip_right_bracket--;
+                }
+            }
+            // 如果右括号计数=0,表明没有响应的左括号与当前右括号匹配
+            if (tip_right_bracket == 0) {
+                flag= false;
+            }
+
+        }
+        // 检查输入=的合法性
+        if (command2.compareTo("=") == 0) {
+            // 括号匹配数
+            int tip_bracket = 0;
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).equals("(")) {
+                    tip_bracket++;
+                }
+                if (list.get(i).equals(")")) {
+                    tip_bracket--;
+                }
+            }
+            // 若大于0，表明左括号还有未匹配的
+            if (tip_bracket > 0) {
+                flag= false;
+                //bracket = tip_bracket;
+            } else if (tip_bracket == 0) {
+                // 若前一个字符是以下之一，表明=号不合法
+                if ("+-*/".indexOf(command1) != -1) {
+                    flag= false;
+                }
+            }
+        }
+        return flag;
+    }
+
+    /******************************************************
+     **函数名及参数： printText(String key)
+     **返回类型： void
+     **作用: 将通过了检查的进行显示
+     *****************************************************/
+    private void printText(String key)
+    {
         if (vbegin) {
             resultText.setText(key);// 清屏后输出
             // firstDigit = false;
@@ -285,11 +410,14 @@ public class Calculator extends JFrame implements ActionListener {
 
 
 
-    //核心计算功能实现
-    private void calculate(String expression) {
-        System.out.println(expression );
-
-
+    /*****************************************************
+     **函数名及参数： printText(String key)
+     **返回类型： void
+     **作用: 进行计算，并显示结果
+     ******************************************************/
+    private void calculate(String expression)
+    {
+        Calculate.cal(expression);
+        resultText.setText(Calculate.cal(expression)+"");
     }
-
 }
