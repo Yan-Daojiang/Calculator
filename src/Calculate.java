@@ -6,7 +6,7 @@ import java.util.StringTokenizer;
  * @author: Yan_Daojiang
  * @date: 2018/12/18
  * @description:实现核心的计算功能的类
- * @Algirithm:
+ * @Algirithm:算符优先法
  **/
 
 public class Calculate {

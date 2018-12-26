@@ -38,7 +38,7 @@ public class Calculator extends JFrame implements ActionListener {
     private JButton bt_point = new JButton(".");
     private JButton bt_is = new JButton("=");
     //文本框显示计算的结果
-    private JTextField resultText = new JTextField("0");
+    static JTextField resultText = new JTextField("0");
     //设置两个panel用于添加按钮和文本框
     static JPanel key_pan = new JPanel();
     static JPanel result_pan = new JPanel();
