@@ -10,7 +10,6 @@ import java.util.ArrayList;
  * @description:包含计算器的界面和设置输入检查，不能通过检查时的点击就不会进行响应
  **/
 
-
 public class Calculator extends JFrame implements ActionListener {
     //需要进行运算的表达式,用于辅助检查
     private ArrayList<String> list;

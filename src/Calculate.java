@@ -10,7 +10,6 @@ import java.util.Stack;
 
 public class Calculate {
 
-
     /**************************************
     **函数名及参数：Precede(char t1, char t2)
      **返回类型：char
