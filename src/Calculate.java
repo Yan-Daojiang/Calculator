@@ -1,11 +1,10 @@
 import java.util.ArrayList;
 import java.util.Stack;
-import java.util.StringTokenizer;
 
 /**
  * @author: Yan_Daojiang
  * @date: 2018/12/18
- * @description:实现核心的计算功能的类
+ * @description:实现核心的计算功能的类，对一个表达式进行解析后计算
  * @Algirithm:算符优先法
  **/
 
@@ -15,7 +14,7 @@ public class Calculate {
     /**************************************
     **函数名及参数：Precede(char t1, char t2)
      **返回类型：char
-     **作用：比较两个运算符的优先级
+     **作用：比较两个运算符的优先关系
      ********************************************/
     private static char Precede(char t1, char t2)
     { //判断两符号的优先关系
@@ -69,7 +68,7 @@ public class Calculate {
      **作用：判断参数中的c是否为运算符，
      * ****是返回true，否返回false
      ********************************************/
-    public static boolean In(char c)
+    private static boolean In(char c)
     { // 判断c是否为运算符
         switch (c)
         {
@@ -92,20 +91,21 @@ public class Calculate {
     private static ArrayList<String> Analysis(String aim)
     {
         //解析表达式
-        String string=aim+"#";
-        StringBuffer curNum = new StringBuffer();//用于追加多位数和小数
+        String string=aim+"#";//表达式的尾部加一个#方便后面操作
+        StringBuffer curNum = new StringBuffer();//缓冲：用于追加多位数和小数
         ArrayList<String> expression = new ArrayList<>();
-        //读取表达式的字符
+
+        //读取表达式的字符，进行分为后加入expression
         for (int j = 0; j < string.length(); j++) {
             String str = string.charAt(j) + "";
             //当前获取的为数字或者小数点
             if (str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4")
                     || str.equals("5") || str.equals("6") || str.equals("7") || str.equals("8") ||
                     str.equals("9") || str.equals("0") || str.equals(".")) {
-                curNum.append(str);
+                curNum.append(str);//加入缓冲
             }
             else{
-                if(string.charAt(j)=='-'&&j==0){//-
+                if(string.charAt(j)=='-'&&j==0){//第一位负数时，补0加符号
                     if(curNum.length()>0)
                     {
                         expression.add(curNum.toString());
@@ -120,7 +120,7 @@ public class Calculate {
                     }
                 }
                 else if(string.charAt(j)=='('&&string.charAt(j+1)=='-')
-                {//-
+                {//中间负数时, 补（0
                     if(curNum.length()>0)
                     {
                         expression.add(curNum.toString());
@@ -135,6 +135,7 @@ public class Calculate {
                     }
 
                 }
+                //直接处理符号
                 else{
                     if(curNum.length()>0)
                     {
@@ -158,64 +159,10 @@ public class Calculate {
 
 
     /**************************************
-     **函数名及参数：Acalculation( ArrayList<String> expression）
-     **返回类型：double
-     **作用：对解析之后的表达式进行求值，并从栈顶返回最终的计算结果
-     ********************************************/
-    private static double calculation( ArrayList<String> expression)
-    {
-        Stack<Character>OPTR=new Stack<>();
-        Stack<Double>OPND=new Stack<>();
-
-        OPTR.push('#');//向符号栈中压入“#”作为判断
-
-
-        //解析的表达式通过字符串进行存储；s数组中的每个元素为需要进行转换操作的元素
-        //如果是数字就转换为double类型，符号就转换为char类型
-        String[] s=(String[])expression.toArray(new String[expression.size()]);
-
-        int i=0;
-
-        String c=s[i];
-
-        while(c.charAt(0)!='#'||OPTR.peek()!='#'){
-            if(!In(c.charAt(0))){
-                OPND.push(Double.parseDouble(c));
-                i++;
-                c=s[i];
-            }
-            else
-                switch (Precede(OPTR.peek(),c.charAt(0))){
-                    case '<':
-                        OPTR.push(c.charAt(0));
-                        i++;
-                        c=s[i];
-                        break;
-                    case'=':
-                        OPTR.pop();
-                        i++;
-                        c=s[i];
-                        break;
-                    case'>':
-                        char theta=OPTR.pop();
-                        double b=OPND.pop();
-                        double a=OPND.pop();
-                        OPND.push(Operate(a,theta,b));
-                        break;
-                }
-
-        }
-        //System.out.println(OPND.peek());
-        return OPND.peek();//返回计算的结果
-    }
-
-
-
-    /**************************************
      **函数名及参数：Operate(double a, char theta, double b)
      **返回类型：double
      **作用：根据符号栈中弹出的符号，计算从栈中弹出的两个操作数，
-     * ****并将中间结果再次入栈
+     * ****并返回中间结果，准备再次入栈
      ********************************************/
     private static double Operate(double a, char theta, double b)
     {
@@ -237,6 +184,65 @@ public class Calculate {
         }
         return c;
     }
+
+
+
+
+
+    /**************************************
+     **函数名及参数：Acalculation( ArrayList<String> expression）
+     **返回类型：double
+     **作用：对解析之后的表达式进行求值，并从栈顶返回最终的计算结果
+     ********************************************/
+    private static double calculation( ArrayList<String> expression)
+    {
+        Stack<Character>OPTR=new Stack<>();
+        Stack<Double>OPND=new Stack<>();
+
+        OPTR.push('#');//向符号栈中压入“#”作为判断
+
+        //expression 转换为字符串数组
+        //解析的表达式通过字符串进行存储；s数组中的每个元素为需要进行转换操作的元素
+        //如果是数字就转换为double类型，符号就转换为char类型
+        String[] s=(String[])expression.toArray(new String[expression.size()]);
+
+        int i=0;
+
+        String c=s[i];
+
+        while(c.charAt(0)!='#'||OPTR.peek()!='#'){
+            //是数字时直接加入数字栈
+            if(!In(c.charAt(0))){
+                OPND.push(Double.parseDouble(c));
+                i++;
+                c=s[i];
+            }
+            else
+                switch (Precede(OPTR.peek(),c.charAt(0))){
+                    case '<'://优先级低就直接压人符号栈，读取下一位
+                        OPTR.push(c.charAt(0));
+                        i++;
+                        c=s[i];
+                        break;
+                    case'='://脱括号，接收下一个
+                        OPTR.pop();
+                        i++;
+                        c=s[i];
+                        break;
+                    case'>'://退栈运算，结果入栈
+                        char theta=OPTR.pop();
+                        double b=OPND.pop();
+                        double a=OPND.pop();
+                        OPND.push(Operate(a,theta,b));
+                        break;
+                }
+
+        }
+        //System.out.println(OPND.peek());
+        return OPND.peek();//返回计算的结果
+    }
+
+
 
 
     /**************************************
