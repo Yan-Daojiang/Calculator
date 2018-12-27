@@ -1,14 +1,14 @@
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Stack;
+        import java.awt.*;
+        import java.awt.event.ActionEvent;
+        import java.awt.event.ActionListener;
+        import java.util.ArrayList;
+        import java.util.Stack;
 
 /**
  * @author: Yan_Daojiang
  * @date: 2018/12/14
- * @description:包含计算器的界面设置输入检查，不能通过检查时的点击就不会进行响应
+ * @description:包含计算器的界面和设置输入检查，不能通过检查时的点击就不会进行响应
  **/
 
 
@@ -157,7 +157,7 @@ public class Calculator extends JFrame implements ActionListener {
         mainJFrame.setDefaultCloseOperation(3);//设置关闭程序
 
         //设置主界面的布局，添加文本框和按钮的panel
-       //主界面使用JFrame的默认布局
+        //主界面使用JFrame的默认布局
         container.add(result_pan,BorderLayout.NORTH);
         container.add(key_pan,BorderLayout.CENTER);
 

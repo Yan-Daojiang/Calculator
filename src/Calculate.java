@@ -102,17 +102,17 @@ public class Calculate {
             if (str.equals("1") || str.equals("2") || str.equals("3") || str.equals("4")
                     || str.equals("5") || str.equals("6") || str.equals("7") || str.equals("8") ||
                     str.equals("9") || str.equals("0") || str.equals(".")) {
-                curNum.append(str);//加入缓冲
-            }
-            else{
-                if(string.charAt(j)=='-'&&j==0){//第一位负数时，补0加符号
-                    if(curNum.length()>0)
+                curNum.append(str);//
+            } else{
+                if(string.charAt(j)=='-'&&j==0){
+                    if(curNum.length()>0)//判断
                     {
                         expression.add(curNum.toString());
-                        curNum.delete(0,curNum.length());//取出数据后就清空
+                        curNum.delete(0,curNum.length());
                         expression.add("0");
                         expression.add("-");
                     }
+
                     else
                     {
                         expression.add("0");
@@ -190,7 +190,7 @@ public class Calculate {
 
 
     /**************************************
-     **函数名及参数：Acalculation( ArrayList<String> expression）
+     **函数名及参数：calculation( ArrayList<String> expression）
      **返回类型：double
      **作用：对解析之后的表达式进行求值，并从栈顶返回最终的计算结果
      ********************************************/
