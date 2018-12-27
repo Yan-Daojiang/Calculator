@@ -62,6 +62,8 @@ public class Calculate {
         return f;
     }
 
+
+
     /**************************************
      **函数名及参数：In(char c)
      **返回类型：boolean
@@ -82,6 +84,8 @@ public class Calculate {
             default:return false;
         }
     }
+
+
 
     /**************************************
      **函数名及参数：Analysis(String aim)
@@ -259,5 +263,6 @@ public class Calculate {
         result=calculation(expression);
         return result;
     }
+
 
 }

@@ -1,9 +1,8 @@
 import javax.swing.*;
-        import java.awt.*;
-        import java.awt.event.ActionEvent;
-        import java.awt.event.ActionListener;
-        import java.util.ArrayList;
-        import java.util.Stack;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * @author: Yan_Daojiang
@@ -313,6 +312,7 @@ public class Calculator extends JFrame implements ActionListener {
         }
         return flag;
     }
+
 
 
     /**************************************************************
