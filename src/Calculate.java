@@ -9,12 +9,6 @@ import java.util.Stack;
  **/
 
 public class Calculate {
-
-    /**************************************
-    **函数名及参数：Precede(char t1, char t2)
-     **返回类型：char
-     **作用：比较两个运算符的优先关系
-     ********************************************/
     private static char Precede(char t1, char t2)
     { //判断两符号的优先关系
         char f='!';
@@ -62,13 +56,6 @@ public class Calculate {
     }
 
 
-
-    /**************************************
-     **函数名及参数：In(char c)
-     **返回类型：boolean
-     **作用：判断参数中的c是否为运算符，
-     * ****是返回true，否返回false
-     ********************************************/
     private static boolean In(char c)
     { // 判断c是否为运算符
         switch (c)
@@ -85,12 +72,6 @@ public class Calculate {
     }
 
 
-
-    /**************************************
-     **函数名及参数：Analysis(String aim)
-     **返回类型：ArrayList<String>
-     **作用：对目标表达式进行解析，保存能够处理多位数和小数
-     ********************************************/
     private static ArrayList<String> Analysis(String aim)
     {
         //解析表达式
@@ -160,13 +141,6 @@ public class Calculate {
 
 
 
-
-    /**************************************
-     **函数名及参数：Operate(double a, char theta, double b)
-     **返回类型：double
-     **作用：根据符号栈中弹出的符号，计算从栈中弹出的两个操作数，
-     * ****并返回中间结果，准备再次入栈
-     ********************************************/
     private static double Operate(double a, char theta, double b)
     {
         //根据运算符进行二元运算的函数实现
@@ -189,14 +163,6 @@ public class Calculate {
     }
 
 
-
-
-
-    /**************************************
-     **函数名及参数：calculation( ArrayList<String> expression）
-     **返回类型：double
-     **作用：对解析之后的表达式进行求值，并从栈顶返回最终的计算结果
-     ********************************************/
     private static double calculation( ArrayList<String> expression)
     {
         Stack<Character>OPTR=new Stack<>();
@@ -246,13 +212,6 @@ public class Calculate {
     }
 
 
-
-
-    /**************************************
-     **函数名及参数：cal(String aim)
-     **返回类型：double
-     **作用：触发计算功能，返回最终结果，便于计算器输出
-     ********************************************/
     public static double cal(String aim)
     {
         double result;
@@ -262,6 +221,4 @@ public class Calculate {
         result=calculation(expression);
         return result;
     }
-
-
 }
